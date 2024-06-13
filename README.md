@@ -6,16 +6,19 @@
 
 <br>
 
-# mac-cacheline
+# mac-cacheinfo
 
-C++ program to retrieve the CPU cache line size of Mac devices.
+C++ program to retrieve the CPU Cache Sizes of Mac devices.
 
 If you have questions or concerns please feel free to contact me here or on **Discord @im.upset**.
 
 ## Build & Run
 
 ```
-TBA
+git clone https://github.com/3SUM/mac-cacheinfo.git
+cd mac-cacheinfo/src
+make
+./cache
 ```
 
 ## License
