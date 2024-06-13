@@ -26,7 +26,7 @@ make
 2023 M2 MacBook Air Cache Info
 
 ```
-Device Info
+Apple M2 CPU Info
 ====================================
 	Cache Line Size:      128  B
 	L1i  Cache Size:  131.072 KB
