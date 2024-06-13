@@ -28,10 +28,10 @@ make
 ```
 Device Info
 ====================================
-	    Cache Line Size:      128  B
-	    L1i  Cache Size:  131.072 KB
-	    L1d  Cache Size:   65.536 KB
-	    L2   Cache Size:  131.072 KB
+	Cache Line Size:      128  B
+	L1i  Cache Size:  131.072 KB
+	L1d  Cache Size:   65.536 KB
+	L2   Cache Size:  131.072 KB
 ```
 
 ## License
