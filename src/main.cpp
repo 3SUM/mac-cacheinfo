@@ -7,35 +7,60 @@
 std::string get_cpu_type() {
     char buffer[128];
     size_t size = sizeof(buffer);
-    sysctlbyname("machdep.cpu.brand_string", &buffer, &size, NULL, 0);
+
+    if (sysctlbyname("machdep.cpu.brand_string", &buffer, &size, NULL, 0) < 0) {
+        std::print("[ERROR] Unable to retrieve CPU Type!\n");
+        exit(EXIT_FAILURE);
+    }
+
     return std::string(buffer);
 }
 
 size_t get_cachelinesize() {
     size_t cacheline = 0;
     size_t size = sizeof(cacheline);
-    sysctlbyname("hw.cachelinesize", &cacheline, &size, NULL, 0);
+
+    if (sysctlbyname("hw.cachelinesize", &cacheline, &size, NULL, 0) < 0) {
+        std::print("[ERROR] Unable to retrieve Cache Line Size\n");
+        exit(EXIT_FAILURE);
+    }
+
     return cacheline;
 }
 
 size_t get_l1icachesize() {
     size_t l1icache = 0;
     size_t size = sizeof(l1icache);
-    sysctlbyname("hw.l1icachesize", &l1icache, &size, NULL, 0);
+
+    if (sysctlbyname("hw.l1icachesize", &l1icache, &size, NULL, 0) < 0) {
+        std::print("[ERROR] Unable to retrieve L1i Cache Size\n");
+        exit(EXIT_FAILURE);
+    }
+
     return l1icache;
 }
 
 size_t get_l1dcachesize() {
     size_t l1dcache = 0;
     size_t size = sizeof(l1dcache);
-    sysctlbyname("hw.l1dcachesize", &l1dcache, &size, NULL, 0);
+
+    if (sysctlbyname("hw.l1dcachesize", &l1dcache, &size, NULL, 0) < 0) {
+        std::print("[ERROR] Unable to retrieve L1d Cache Size\n");
+        exit(EXIT_FAILURE);
+    }
+
     return l1dcache;
 }
 
 size_t get_l2cachesize() {
     size_t l2cache = 0;
     size_t size = sizeof(l2cache);
-    sysctlbyname("hw.l1icachesize", &l2cache, &size, NULL, 0);
+
+    if (sysctlbyname("hw.l2cachesize", &l2cache, &size, NULL, 0) < 0) {
+        std::print("[ERROR] Unable to retrieve L2 Cache Size\n");
+        exit(EXIT_FAILURE);
+    }
+
     return l2cache;
 }
 
