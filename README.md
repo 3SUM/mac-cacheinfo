@@ -1,7 +1,7 @@
 <br>
 
 <p align="center">
-<a href="https://github.com/3SUM"><img width="200" src="./logo/cache.png" alt="cache logo"></a>
+<a href="https://github.com/3SUM"><img width="200" src="logo/cache.png" alt="cache logo"></a>
 </p>
 
 <br>
@@ -10,7 +10,7 @@
 
 C++ program to retrieve the CPU Cache Sizes of Mac devices.
 
-If you have questions or concerns please feel free to contact me here or on **Discord @im.upset**.
+If you have questions or concerns please feel free to contact me here or on **Discord @v0.3**
 
 ## Build & Run
 
