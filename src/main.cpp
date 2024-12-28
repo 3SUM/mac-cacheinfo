@@ -3,77 +3,99 @@
 #include <cstdint>
 #include <print>
 #include <string>
+#include <optional>
+#include <stdexcept>
 
-std::string get_cpu_type() {
-    char buffer[128];
+constexpr size_t BUFFER_SIZE = 128;
+
+std::string get_cpu_type()
+{
+    char buffer[BUFFER_SIZE];
     size_t size = sizeof(buffer);
 
-    if (sysctlbyname("machdep.cpu.brand_string", &buffer, &size, NULL, 0) < 0) {
-        std::print("[ERROR] Unable to retrieve CPU Type!\n");
-        exit(EXIT_FAILURE);
+    if (sysctlbyname("machdep.cpu.brand_string", &buffer, &size, nullptr, 0) < 0)
+    {
+        throw std::runtime_error("Unable to retrieve CPU Type");
     }
 
     return std::string(buffer);
 }
 
-size_t get_cachelinesize() {
-    size_t cacheline = 0;
-    size_t size = sizeof(cacheline);
+std::optional<size_t> get_sysctl_value(const char *name)
+{
+    size_t value = 0;
+    size_t size = sizeof(value);
 
-    if (sysctlbyname("hw.cachelinesize", &cacheline, &size, NULL, 0) < 0) {
-        std::print("[ERROR] Unable to retrieve Cache Line Size\n");
-        exit(EXIT_FAILURE);
+    if (sysctlbyname(name, &value, &size, nullptr, 0) < 0)
+    {
+        return std::nullopt;
     }
 
-    return cacheline;
+    return value;
 }
 
-size_t get_l1icachesize() {
-    size_t l1icache = 0;
-    size_t size = sizeof(l1icache);
-
-    if (sysctlbyname("hw.l1icachesize", &l1icache, &size, NULL, 0) < 0) {
-        std::print("[ERROR] Unable to retrieve L1i Cache Size\n");
-        exit(EXIT_FAILURE);
+size_t get_cachelinesize()
+{
+    if (auto value = get_sysctl_value("hw.cachelinesize"); value)
+    {
+        return *value;
     }
 
-    return l1icache;
+    throw std::runtime_error("Unable to retreive Cache Line Size");
 }
 
-size_t get_l1dcachesize() {
-    size_t l1dcache = 0;
-    size_t size = sizeof(l1dcache);
-
-    if (sysctlbyname("hw.l1dcachesize", &l1dcache, &size, NULL, 0) < 0) {
-        std::print("[ERROR] Unable to retrieve L1d Cache Size\n");
-        exit(EXIT_FAILURE);
+size_t get_l1icachesize()
+{
+    if (auto value = get_sysctl_value("hw.l1icachesize"); value)
+    {
+        return *value;
     }
 
-    return l1dcache;
+    throw std::runtime_error("Unable to retreive L1i Cache Size");
 }
 
-size_t get_l2cachesize() {
-    size_t l2cache = 0;
-    size_t size = sizeof(l2cache);
-
-    if (sysctlbyname("hw.l2cachesize", &l2cache, &size, NULL, 0) < 0) {
-        std::print("[ERROR] Unable to retrieve L2 Cache Size\n");
-        exit(EXIT_FAILURE);
+size_t get_l1dcachesize()
+{
+    if (auto value = get_sysctl_value("hw.l1dcachesize"); value)
+    {
+        return *value;
     }
 
-    return l2cache;
+    throw std::runtime_error("Unable to retrieve L1d Cache Size");
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 1) {
+size_t get_l2cachesize()
+{
+    if (auto value = get_sysctl_value("hw.l2cachesize"); value)
+    {
+        return *value;
+    }
+
+    throw std::runtime_error("Unable to retrieve L2 Cache Size");
+}
+
+int main(int argc, char *argv[])
+{
+
+    if (argc != 1)
+    {
         std::print("Usage\n\t./cache\n");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
-    std::print("{} CPU Info\n{:=>36}\n", get_cpu_type(), '=');
-    std::print("\tCache Line Size: {:>8}  B\n", get_cachelinesize());
-    std::print("\tL1i  Cache Size: {:>8} KB\n", get_l1icachesize() * 1e-3);
-    std::print("\tL1d  Cache Size: {:>8} KB\n", get_l1dcachesize() * 1e-3);
-    std::print("\tL2   Cache Size: {:>8} KB\n", get_l2cachesize() * 1e-3);
-    exit(EXIT_SUCCESS);
+    try
+    {
+        std::print("{} CPU Info\n{:=>36}\n", get_cpu_type(), '=');
+        std::print("\tCache Line Size: {:>8}  B\n", get_cachelinesize());
+        std::print("\tL1i  Cache Size: {:>8} KB\n", get_l1icachesize() * 1e-3);
+        std::print("\tL1d  Cache Size: {:>8} KB\n", get_l1dcachesize() * 1e-3);
+        std::print("\tL2   Cache Size: {:>8} KB\n", get_l2cachesize() * 1e-3);
+    }
+    catch (const std::exception &e)
+    {
+        std::print("[ERROR] {}\n", e.what());
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
