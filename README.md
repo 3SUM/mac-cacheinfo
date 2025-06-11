@@ -23,15 +23,15 @@ make
 
 ## Example Output
 
-2023 Base M2 MacBook Air Cache Info
+2023 M3 MacBook Pro Cache Info
 
 ```md
-Apple M2 CPU Info
+Apple M3 Pro CPU Info
 ====================================
-	Cache Line Size:      128  B
-	L1i  Cache Size:  131.072 KB
-	L1d  Cache Size:   65.536 KB
-	L2   Cache Size: 4194.304 KB
+        Cache Line Size:      128  B
+        L1i  Cache Size:  131.072 KB
+        L1d  Cache Size:   65.536 KB
+        L2   Cache Size: 4194.304 KB
 ```
 
 ## License
